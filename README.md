@@ -9,12 +9,11 @@
 git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger
 
-# Установка зависимостей и сборка React-приложения (создаст папку dist)
+# Установка зависимостей и сборка React-приложения 
 npm install
-npm run build
+
 ```
 
-***ПЕРЕНЕСИТЕ ПАПКУ DIST В ПАПКУ С BACKEND***
 
 ### 2. Запуск монитора (Сервера)
 Перейдите в папку бэкенда и запустите сервер:
@@ -58,4 +57,4 @@ asyncio.run(main())
 ```bash
 python test_bot.py
 ```
-```
+
