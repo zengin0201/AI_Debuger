@@ -1,51 +1,75 @@
-# ENGLISH
+ 🚀 AI Visual Debugger
 
-# 🚀 AI Visual Debugger
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
 
-A versatile tool for real-time visualization and debugging of AI agents. It allows you to see exactly what data goes into the neural network and what comes out at each step of your Chain, right inside your browser.
+**ENGLISH** | [РУССКИЙ](#-ai-visual-debugger-ru)
 
-## 🌟 How it works?
-The project consists of three parts:
-1. **Frontend (React UI):** Renders a beautiful interactive graph.
-2. **Bridge Server (`main.py`):** Runs quietly in the background, receiving data from your AI and serving the UI.
+A lightweight, local tool for real-time visualization and debugging of LangChain AI agents. Stop reading messy console logs — watch your data flow through Prompts, LLMs, and Parsers in a beautiful interactive graph right in your browser.
+
+## 🌟 How it works
+1. **Frontend (React UI):** Renders an interactive flow graph.
+2. **Bridge Server (`main.py`):** A FastAPI backend that runs quietly, receiving data from your AI and serving the UI.
 3. **Plugin (`callback.py`):** Connects to your LangChain agent with just a single line of code.
 
 ---
 
-## 🛠 Quick Start
+## 🛠 Prerequisites
+- **Node.js** (to build the UI)
+- **Python 3.8+** (for the backend and your AI scripts)
+- *(Optional)* **Ollama** installed locally (if you want to run the provided test script).
 
-To run this project from source, you will need **Node.js** (to build the frontend) and **Python** (for the backend).
+---
 
-### Step 1. Build the Frontend (UI)
-First, we need to build the React application.
-1. Clone this repository: `git clone https://github.com/zengin0201/AI_Debugger.git`
-2. Navigate to the frontend folder, install dependencies, and build the app:
+## 🚀 Quick Start Guide
+
+### Step 1: Build the UI (Frontend)
+First, compile the React application.
 ```bash
+git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger/frontend
+
 npm install
 npm run build
 ```
-3. **Crucial step:** After the build is complete, a `dist` folder will appear in the `frontend` directory. **Copy this `dist` folder and paste it into the `backend` folder.** The Python server needs it to render the dashboard!
+⚠️ **CRUCIAL:** After the build, a `dist` folder will appear inside `frontend/`. **Copy this `dist` folder and paste it into the `backend/` directory.** The Python server needs it to render the dashboard!
 
-*(Alternatively, you can load this `dist` folder in Chrome via `chrome://extensions/` -> "Load unpacked" to use it as a Chrome Extension).*
+*(Alternatively, you can load this `dist` folder in Chrome via `chrome://extensions/` -> "Load unpacked" to use it as a standalone Chrome Extension).*
 
-### Step 2. Run the Bridge Server
-Navigate to the backend folder, install Python dependencies, and start the server.
+### Step 2: Run the Monitor Server
+Open a new terminal, navigate to the backend, install dependencies, and start the server:
 ```bash
-cd ../backend
+cd AI_Debugger/backend
 pip install -r requirements.txt
 python main.py
 ```
-Open your browser and go to **http://localhost:8000**. You should see the empty AI Flow graph waiting for data.
+👉 Open **http://localhost:8000** in your browser. You should see the empty dashboard waiting for data. Keep this terminal running!
 
-### Step 3. Connect to your AI Agent
-Place the `callback.py` file (from the `backend` folder) next to your own Python script.
+### Step 3: Test with the provided Bot
+We included a ready-to-use test bot. Make sure [Ollama](https://ollama.com/) is running on your machine with the model `qwen2.5:1.5b` (or change the model in `test_bot.py`).
 
-Example integration (`test_bot.py`):
+Open a *second* terminal and run:
+```bash
+cd AI_Debugger/backend
+python test_bot.py
+```
+Watch your browser: the agent's steps, inputs, and outputs will instantly draw a beautiful pipeline!
+
+---
+
+## 💻 How to use it in YOUR project
+Want to debug your own LangChain project? It takes 3 lines of code.
+
+1. Copy the `callback.py` file from the `backend` folder and place it next to your Python script.
+2. Import and initialize the debugger.
+3. Pass it to the `config` when invoking your chain.
+
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
 # 1. Import the visual debugger
 from callback import RealUIDebuggerCallback
@@ -53,7 +77,9 @@ from callback import RealUIDebuggerCallback
 async def main():
     llm = ChatOpenAI(model="gpt-3.5-turbo")
     prompt = PromptTemplate.from_template("Write a fun fact about: {topic}")
-    chain = prompt | llm
+    parser = StrOutputParser()
+    
+    chain = prompt | llm | parser
 
     # 2. Initialize the plugin
     ui_debugger = RealUIDebuggerCallback()
@@ -63,73 +89,87 @@ async def main():
         {"topic": "Space"}, 
         config={"callbacks": [ui_debugger]} 
     )
-    print(response.content)
+    print(response)
 
 asyncio.run(main())
 ```
 
-### Step 4. See the magic! 🪄
-Make sure the browser with the dashboard is open, then run your bot in a new terminal:
-```bash
-python test_bot.py
-```
-The agent's steps, thoughts, inputs, and outputs will instantly appear on the graph!
+> ⚠️ **IMPORTANT:** The debugger works asynchronously via WebSockets. You **must** use `.ainvoke()` instead of `.invoke()` to run your chains, otherwise the data won't be streamed to the UI!
 
 
+<br><br><br>
 
 ---
 ---
 
+<a name="-ai-visual-debugger-ru"></a>
 
+# 🚀 AI Visual Debugger (RU)
 
-# RUSSIAN
+Легковесный локальный инструмент для визуализации и отладки работы ИИ-агентов на базе LangChain в реальном времени. Хватит читать нечитаемые логи в консоли — смотрите, как данные проходят через промпты, нейросеть и парсеры на красивом интерактивном графе прямо в браузере.
 
-# 🚀 AI Visual Debugger
-
-Универсальный инструмент для визуализации и отладки работы ИИ-агентов в реальном времени. Позволяет увидеть, какие данные входят в нейросеть и какие выходят на каждом этапе цепочки (Chain), прямо в вашем браузере.
-
-## 🌟 Как это работает?
-Проект состоит из трех частей:
+## 🌟 Как это работает
 1. **Фронтенд (React UI):** Отрисовывает красивый интерактивный граф.
-2. **Сервер-мост (`main.py`):** Тихо работает в фоне, получает данные от ИИ и раздает интерфейс.
+2. **Сервер-мост (`main.py`):** FastAPI бэкенд, который тихо работает в фоне, получает данные от ИИ и раздает интерфейс.
 3. **Плагин (`callback.py`):** Подключается к вашему LangChain агенту одной строчкой кода.
 
 ---
 
-## 🛠 Быстрый старт
+## 🛠 Требования
+- **Node.js** (для сборки фронтенда)
+- **Python 3.8+** (для бэкенда и ваших ИИ-скриптов)
+- *(Опционально)* Установленная **Ollama** (если хотите запустить тестовый скрипт из репозитория).
 
-Для запуска проекта из исходников у вас должны быть установлены **Node.js** (для сборки фронтенда) и **Python** (для бэкенда).
+---
 
-### Шаг 1. Сборка фронтенда (UI)
-Сначала нам нужно собрать React-приложение.
-1. Склонируйте репозиторий: `git clone https://github.com/zengin0201/AI_Debugger.git`
-2. Перейдите в папку фронтенда, установите зависимости и запустите сборку:
+## 🚀 Пошаговая инструкция
+
+### Шаг 1: Сборка интерфейса (Фронтенд)
+Сначала соберем React-приложение.
 ```bash
+git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger/frontend
+
 npm install
 npm run build
 ```
-3. **Важный шаг:** После сборки в папке `frontend` появится папка `dist`. **Скопируйте эту папку `dist` и поместите её в папку `backend`.** Она нужна Python-серверу, чтобы отрисовать интерфейс!
+⚠️ **ВАЖНО:** После сборки в папке `frontend/` появится папка `dist`. **Скопируйте эту папку `dist` и поместите её в папку `backend/`.** Она нужна Python-серверу, чтобы отрисовать интерфейс!
 
-*(Как альтернатива: вы можете использовать эту папку `dist` как Chrome-расширение. Для этого откройте `chrome://extensions/`, включите Режим разработчика и нажмите "Загрузить распакованное расширение").*
+*(Альтернатива: вы можете загрузить эту папку `dist` как Chrome-расширение. Откройте `chrome://extensions/`, включите Режим разработчика и нажмите "Загрузить распакованное расширение").*
 
-### Шаг 2. Запуск сервера-моста
-Перейдите в папку бэкенда, установите зависимости и запустите сервер:
+### Шаг 2: Запуск сервера мониторинга
+Откройте новый терминал, перейдите в папку бэкенда, установите зависимости и запустите сервер:
 ```bash
-cd ../backend
+cd AI_Debugger/backend
 pip install -r requirements.txt
 python main.py
 ```
-Откройте браузер и перейдите по адресу **http://localhost:8000**. Вы увидите пустой граф, ожидающий данных.
+👉 Откройте браузер по адресу **http://localhost:8000**. Вы увидите пустой дашборд. Не закрывайте этот терминал!
 
-### Шаг 3. Подключение к вашему ИИ-агенту
-Скопируйте файл `callback.py` (из папки `backend`) и положите рядом со своим Python-скриптом.
+### Шаг 3: Тест готового бота
+Мы подготовили тестового бота. Убедитесь, что у вас запущена локальная [Ollama](https://ollama.com/) с моделью `qwen2.5:1.5b` (или измените модель внутри `test_bot.py`).
 
-Пример интеграции в ваш код (`test_bot.py`):
+Откройте *второй* терминал и запустите скрипт:
+```bash
+cd AI_Debugger/backend
+python test_bot.py
+```
+Посмотрите в браузер: шаги агента, его входы и выходы мгновенно отрисуют красивый пайплайн!
+
+---
+
+## 💻 Как внедрить это в ВАШ проект
+Хотите дебажить собственный LangChain код? Это займет 3 строчки.
+
+1. Скопируйте файл `callback.py` (из папки `backend`) и положите рядом со своим Python-скриптом.
+2. Импортируйте и инициализируйте дебаггер.
+3. Передайте его в `config` при запуске цепочки.
+
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
 # 1. Импортируем визуальный отладчик
 from callback import RealUIDebuggerCallback
@@ -137,7 +177,9 @@ from callback import RealUIDebuggerCallback
 async def main():
     llm = ChatOpenAI(model="gpt-3.5-turbo")
     prompt = PromptTemplate.from_template("Напиши факт про: {topic}")
-    chain = prompt | llm
+    parser = StrOutputParser()
+    
+    chain = prompt | llm | parser
 
     # 2. Инициализируем плагин
     ui_debugger = RealUIDebuggerCallback()
@@ -147,15 +189,9 @@ async def main():
         {"topic": "Космос"}, 
         config={"callbacks": [ui_debugger]} 
     )
-    print(response.content)
+    print(response)
 
 asyncio.run(main())
 ```
 
-### Шаг 4. Смотрим магию! 🪄
-Убедитесь, что у вас открыта вкладка с дашбордом, и запустите вашего бота в новом терминале:
-```bash
-python test_bot.py
-```
-Шаги агента, его мысли, входные и выходные данные мгновенно появятся на графе в браузере!
-```
+> ⚠️ **ОЧЕНЬ ВАЖНО:** Дебаггер работает асинхронно через WebSockets. Для запуска ваших цепочек вы **обязательно** должны использовать метод `.ainvoke()` вместо `.invoke()`, иначе данные не поступят в монитор!
