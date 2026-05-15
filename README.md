@@ -76,7 +76,7 @@ The agent's steps, thoughts, inputs, and outputs will instantly appear on the gr
 
 
 
-#RUSSIAN
+# RUSSIAN
 
 # 🚀 AI Visual Debugger (LangChain Chrome Extension)
 
