@@ -1,31 +1,32 @@
- 🚀 AI Visual Debugger
+```markdown
+# 🚀 AI Visual Debugger (Chrome Extension)
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
 
-**ENGLISH** | [РУССКИЙ](#-ai-visual-debugger-ru)
+**ENGLISH** | [РУССКИЙ](#-ai-visual-debugger-chrome-расширение-ru)
 
-A lightweight, local tool for real-time visualization and debugging of LangChain AI agents. Stop reading messy console logs — watch your data flow through Prompts, LLMs, and Parsers in a beautiful interactive graph right in your browser.
+A lightweight Chrome Extension and local tool for real-time visualization and debugging of LangChain AI agents. Stop reading messy console logs — watch your data flow through Prompts, LLMs, and Parsers in a beautiful interactive graph right in your browser.
 
 ## 🌟 How it works
-1. **Frontend (React UI):** Renders an interactive flow graph.
-2. **Bridge Server (`main.py`):** A FastAPI backend that runs quietly, receiving data from your AI and serving the UI.
+1. **Chrome Extension (React UI):** A popup in your browser that renders the interactive flow graph.
+2. **Bridge Server (`main.py`):** A lightweight FastAPI backend that runs quietly, receiving data from your AI and streaming it to the extension.
 3. **Plugin (`callback.py`):** Connects to your LangChain agent with just a single line of code.
 
 ---
 
 ## 🛠 Prerequisites
-- **Node.js** (to build the UI)
-- **Python 3.8+** (for the backend and your AI scripts)
+- **Node.js** (to build the extension)
+- **Python 3.8+** (for the bridge server and your AI scripts)
 - *(Optional)* **Ollama** installed locally (if you want to run the provided test script).
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### Step 1: Build the UI (Frontend)
-First, compile the React application.
+### Step 1: Build the Chrome Extension
+First, we need to compile the React application into a Chrome Extension.
 ```bash
 git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger/frontend
@@ -33,20 +34,25 @@ cd AI_Debugger/frontend
 npm install
 npm run build
 ```
-⚠️ **CRUCIAL:** After the build, a `dist` folder will appear inside `frontend/`. **Copy this `dist` folder and paste it into the `backend/` directory.** The Python server needs it to render the dashboard!
+After the build, a `dist` folder will appear inside the `frontend/` directory. **This folder is your Chrome Extension.**
 
-*(Alternatively, you can load this `dist` folder in Chrome via `chrome://extensions/` -> "Load unpacked" to use it as a standalone Chrome Extension).*
+### Step 2: Install it in Chrome
+1. Open Google Chrome and navigate to `chrome://extensions/`.
+2. Turn on **Developer mode** (toggle in the top right corner).
+3. Click the **Load unpacked** button in the top left corner.
+4. Select the `dist` folder you just built (`AI_Debugger/frontend/dist`).
+5. *Done!* Pin the extension to your toolbar and click its icon to open the AI Flow Monitor.
 
-### Step 2: Run the Monitor Server
-Open a new terminal, navigate to the backend, install dependencies, and start the server:
+### Step 3: Run the Bridge Server
+The extension needs a bridge to talk to your Python code. Open a terminal, navigate to the backend, and start the server:
 ```bash
 cd AI_Debugger/backend
 pip install -r requirements.txt
 python main.py
 ```
-👉 Open **http://localhost:8000** in your browser. You should see the empty dashboard waiting for data. Keep this terminal running!
+*(Bonus: The server also hosts a web version of the dashboard at **http://localhost:8000** if you prefer not to use the extension).*
 
-### Step 3: Test with the provided Bot
+### Step 4: Test with the provided Bot
 We included a ready-to-use test bot. Make sure [Ollama](https://ollama.com/) is running on your machine with the model `qwen2.5:1.5b` (or change the model in `test_bot.py`).
 
 Open a *second* terminal and run:
@@ -54,7 +60,7 @@ Open a *second* terminal and run:
 cd AI_Debugger/backend
 python test_bot.py
 ```
-Watch your browser: the agent's steps, inputs, and outputs will instantly draw a beautiful pipeline!
+Click the extension icon in Chrome — you will instantly see the agent's pipeline being drawn!
 
 ---
 
@@ -102,30 +108,30 @@ asyncio.run(main())
 ---
 ---
 
-<a name="-ai-visual-debugger-ru"></a>
+<a name="-ai-visual-debugger-chrome-расширение-ru"></a>
 
-# 🚀 AI Visual Debugger (RU)
+# 🚀 AI Visual Debugger (Chrome-расширение) (RU)
 
-Легковесный локальный инструмент для визуализации и отладки работы ИИ-агентов на базе LangChain в реальном времени. Хватит читать нечитаемые логи в консоли — смотрите, как данные проходят через промпты, нейросеть и парсеры на красивом интерактивном графе прямо в браузере.
+Легковесное расширение для Chrome и локальный инструмент для отладки ИИ-агентов (LangChain) в реальном времени. Хватит читать нечитаемые логи в консоли — смотрите, как данные проходят через промпты, нейросеть и парсеры на красивом графе прямо по клику на иконку в браузере.
 
 ## 🌟 Как это работает
-1. **Фронтенд (React UI):** Отрисовывает красивый интерактивный граф.
-2. **Сервер-мост (`main.py`):** FastAPI бэкенд, который тихо работает в фоне, получает данные от ИИ и раздает интерфейс.
+1. **Chrome Расширение (React UI):** Отрисовывает красивый интерактивный граф в всплывающем окне браузера.
+2. **Сервер-мост (`main.py`):** Тихо работает в фоне, получает данные от ИИ и пересылает их в расширение.
 3. **Плагин (`callback.py`):** Подключается к вашему LangChain агенту одной строчкой кода.
 
 ---
 
 ## 🛠 Требования
-- **Node.js** (для сборки фронтенда)
-- **Python 3.8+** (для бэкенда и ваших ИИ-скриптов)
-- *(Опционально)* Установленная **Ollama** (если хотите запустить тестовый скрипт из репозитория).
+- **Node.js** (для сборки расширения)
+- **Python 3.8+** (для сервера-моста и ваших ИИ-скриптов)
+- *(Опционально)* Установленная **Ollama** (если хотите запустить тестовый скрипт).
 
 ---
 
 ## 🚀 Пошаговая инструкция
 
-### Шаг 1: Сборка интерфейса (Фронтенд)
-Сначала соберем React-приложение.
+### Шаг 1: Сборка Chrome-расширения
+Сначала скомпилируем React-приложение в готовое расширение.
 ```bash
 git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger/frontend
@@ -133,20 +139,25 @@ cd AI_Debugger/frontend
 npm install
 npm run build
 ```
-⚠️ **ВАЖНО:** После сборки в папке `frontend/` появится папка `dist`. **Скопируйте эту папку `dist` и поместите её в папку `backend/`.** Она нужна Python-серверу, чтобы отрисовать интерфейс!
+После сборки в папке `frontend/` появится папка `dist`. **Эта папка `dist` и есть ваше готовое Chrome-расширение.**
 
-*(Альтернатива: вы можете загрузить эту папку `dist` как Chrome-расширение. Откройте `chrome://extensions/`, включите Режим разработчика и нажмите "Загрузить распакованное расширение").*
+### Шаг 2: Установка в Chrome
+1. Откройте Google Chrome и перейдите по адресу `chrome://extensions/`.
+2. Включите **Режим разработчика** (переключатель в правом верхнем углу).
+3. Нажмите кнопку **Загрузить распакованное расширение** (в левом верхнем углу).
+4. Выберите папку `dist`, которую мы только что собрали (`AI_Debugger/frontend/dist`).
+5. *Готово!* Закрепите расширение на панели задач. При клике на него откроется монитор AI Flow.
 
-### Шаг 2: Запуск сервера мониторинга
-Откройте новый терминал, перейдите в папку бэкенда, установите зависимости и запустите сервер:
+### Шаг 3: Запуск сервера-моста
+Чтобы расширение получало данные от Python-кода, нужен сервер-мост. Откройте новый терминал, перейдите в папку бэкенда и запустите его:
 ```bash
 cd AI_Debugger/backend
 pip install -r requirements.txt
 python main.py
 ```
-👉 Откройте браузер по адресу **http://localhost:8000**. Вы увидите пустой дашборд. Не закрывайте этот терминал!
+*(Бонус: этот сервер также отдает веб-версию дашборда по адресу **http://localhost:8000**, если скопировать туда папку dist).*
 
-### Шаг 3: Тест готового бота
+### Шаг 4: Тест готового бота
 Мы подготовили тестового бота. Убедитесь, что у вас запущена локальная [Ollama](https://ollama.com/) с моделью `qwen2.5:1.5b` (или измените модель внутри `test_bot.py`).
 
 Откройте *второй* терминал и запустите скрипт:
@@ -154,7 +165,7 @@ python main.py
 cd AI_Debugger/backend
 python test_bot.py
 ```
-Посмотрите в браузер: шаги агента, его входы и выходы мгновенно отрисуют красивый пайплайн!
+Кликните на иконку расширения в Chrome — шаги агента, его входы и выходы мгновенно отрисуют красивый пайплайн!
 
 ---
 
@@ -194,4 +205,5 @@ async def main():
 asyncio.run(main())
 ```
 
-> ⚠️ **ОЧЕНЬ ВАЖНО:** Дебаггер работает асинхронно через WebSockets. Для запуска ваших цепочек вы **обязательно** должны использовать метод `.ainvoke()` вместо `.invoke()`, иначе данные не поступят в монитор!
+> ⚠️ **ОЧЕНЬ ВАЖНО:** Дебаггер работает асинхронно через WebSockets. Для запуска ваших цепочек вы **обязательно** должны использовать метод `.ainvoke()` вместо `.invoke()`, иначе данные не поступят в расширение!
+```
