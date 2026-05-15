@@ -1,4 +1,4 @@
-``markdown
+
 # 🚀 AI Visual Debugger (LangChain)
 
 Универсальный инструмент для визуализации и отладки работы ИИ-агентов в реальном времени. Позволяет увидеть, какие данные входят в нейросеть и какие выходят на каждом этапе цепочки (Chain).
@@ -16,7 +16,7 @@
 ### 1. Запуск монитора (Дашборда)
 Склонируйте репозиторий и запустите сервер:
 ```bash
-git clone https://github.com/zengin0201/AI_Debuger.git
+git clone https://github.com/zengin0201/AI_Debugger.git
 cd AI_Debugger/backend
 pip install -r requirements.txt
 python main.py
@@ -54,4 +54,3 @@ asyncio.run(main())
 ```
 Запустите вашего бота, и его шаги мгновенно появятся на дашборде!
 ```
-</details>
