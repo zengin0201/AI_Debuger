@@ -1,17 +1,21 @@
-
 import json
+import httpx
 from uuid import UUID
 from typing import Any, Dict, Optional
 from langchain_core.callbacks import AsyncCallbackHandler
 
 class RealUIDebuggerCallback(AsyncCallbackHandler):
-    def __init__(self, websocket):
-        self.ws = websocket
+    def __init__(self, server_url="http://localhost:8000"):
+        self.server_url = f"{server_url}/api/track"
         self.last_node_id = None
 
     async def _send(self, data: dict):
-        await self.ws.send_text(json.dumps(data))
+        async with httpx.AsyncClient() as client:
+            try:
+                await client.post(self.server_url, json=data)
+            except Exception as e:
 
+                print(f"[UI Debugger] Ошибка подключения к дашборду: {e}")
 
     async def _add_node_with_edge(self, run_id: str, label: str, inputs: Any = None):
         await self._send({
@@ -48,11 +52,9 @@ class RealUIDebuggerCallback(AsyncCallbackHandler):
     async def on_chat_model_start(
         self, serialized: Dict[str, Any], messages: list, *, run_id: UUID, **kwargs: Any
     ):
-        
         prompt_text = str(messages[0]) if messages else "Пустой промпт"
         await self._add_node_with_edge(str(run_id), "LLM Model (Нейросеть)", prompt_text)
 
-    # При завершении захватываем OUTPUTS
     async def on_chain_end(self, outputs: Dict[str, Any], *, run_id: UUID, **kwargs: Any):
         await self._send({
             "type": "node_updated", 
