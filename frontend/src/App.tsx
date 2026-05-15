@@ -106,7 +106,7 @@ export default function App() {
       {selectedNode && (
         <div className="side-panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ margin: 0 }}>Детали шага</h2>
+            <h2 style={{ margin: 0 }}>Step Details</h2>
             <button className="close-btn" onClick={() => setSelectedNode(null)}>X</button>
           </div>
           
