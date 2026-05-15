@@ -33,13 +33,13 @@ export default function App() {
       const data: WsMessage = JSON.parse(event.data);
 
       if (data.type === 'node_added' && data.id && data.label) {
-        setStatusText("🟡 Агент в работе...");
+        setStatusText("🟡 Agent in work");
         setNodes((nds: Node[]) => [
           ...nds,
           { 
             id: data.id!, 
             position: { x: 250, y: getYPos(nds) }, 
-            data: { label: data.label, inputs: data.inputs, outputs: "Загрузка..." },
+            data: { label: data.label, inputs: data.inputs, outputs: "Download" },
             style: { background: '#ffcc00', color: '#000', border: '2px solid #222', width: 250 }
           }
         ]);
@@ -113,12 +113,12 @@ export default function App() {
           <h3 style={{ color: '#4a90e2' }}>{selectedNode.data.label}</h3>
           
           <div className="data-box">
-            <h4>📥 Входящие данные (Input):</h4>
+            <h4>📥 Enter data (Input):</h4>
             <pre>{selectedNode.data.inputs || "Not data"}</pre>
           </div>
 
           <div className="data-box">
-            <h4>📤 Результат (Output):</h4>
+            <h4>📤 Result (Output):</h4>
             <pre>{selectedNode.data.outputs || "Wait"}</pre>
           </div>
         </div>
