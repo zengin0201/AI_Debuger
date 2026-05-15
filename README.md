@@ -1,42 +1,47 @@
 # ENGLISH
 
-# 🚀 AI Visual Debugger (LangChain Chrome Extension)
+# 🚀 AI Visual Debugger
 
 A versatile tool for real-time visualization and debugging of AI agents. It allows you to see exactly what data goes into the neural network and what comes out at each step of your Chain, right inside your browser.
 
 ## 🌟 How it works?
 The project consists of three parts:
-1. **Chrome Extension (UI):** Renders a beautiful interactive graph.
-2. **Bridge Server (`main.py`):** Runs quietly in the background and forwards data from your AI to the extension.
+1. **Frontend (React UI):** Renders a beautiful interactive graph.
+2. **Bridge Server (`main.py`):** Runs quietly in the background, receiving data from your AI and serving the UI.
 3. **Plugin (`callback.py`):** Connects to your LangChain agent with just a single line of code.
 
 ---
 
-## 🛠 Quick Start (Python Only)
+## 🛠 Quick Start
 
-You don't need to install complex JS frameworks to make it work; all you need is **Python**.
+To run this project from source, you will need **Node.js** (to build the frontend) and **Python** (for the backend).
 
-### Step 1. Install the Chrome Extension
-Since the extension is not yet published in the Web Store, let's install it locally:
+### Step 1. Build the Frontend (UI)
+First, we need to build the React application.
 1. Clone this repository: `git clone https://github.com/zengin0201/AI_Debugger.git`
-2. Open Google Chrome and go to: `chrome://extensions/`
-3. Enable **Developer mode** in the top right corner.
-4. Click the **Load unpacked** button in the top left corner.
-5. Select the **`dist`** folder (located inside the downloaded project).
-*Done! The extension icon will appear in your Chrome toolbar.*
-
-### Step 2. Run the bridge server
-Navigate to the backend folder, install dependencies, and start the server. It will run in the background, waiting for data from your neural network.
+2. Navigate to the frontend folder, install dependencies, and build the app:
 ```bash
-cd AI_Debugger/backend
+cd AI_Debugger/frontend
+npm install
+npm run build
+```
+3. **Crucial step:** After the build is complete, a `dist` folder will appear in the `frontend` directory. **Copy this `dist` folder and paste it into the `backend` folder.** The Python server needs it to render the dashboard!
+
+*(Alternatively, you can load this `dist` folder in Chrome via `chrome://extensions/` -> "Load unpacked" to use it as a Chrome Extension).*
+
+### Step 2. Run the Bridge Server
+Navigate to the backend folder, install Python dependencies, and start the server.
+```bash
+cd ../backend
 pip install -r requirements.txt
 python main.py
 ```
+Open your browser and go to **http://localhost:8000**. You should see the empty AI Flow graph waiting for data.
 
 ### Step 3. Connect to your AI Agent
-Copy the `callback.py` file from the `backend` folder and place it next to your Python script.
+Place the `callback.py` file (from the `backend` folder) next to your own Python script.
 
-Example integration into your code (`test_bot.py`):
+Example integration (`test_bot.py`):
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
@@ -64,55 +69,61 @@ asyncio.run(main())
 ```
 
 ### Step 4. See the magic! 🪄
-1. Click the **AI Debugger** extension icon in Chrome (the monitoring window will open).
-2. Run your bot in the terminal:
+Make sure the browser with the dashboard is open, then run your bot in a new terminal:
 ```bash
 python test_bot.py
 ```
-The agent's steps, thoughts, inputs, and outputs will instantly appear on the graph in your browser!
+The agent's steps, thoughts, inputs, and outputs will instantly appear on the graph!
 
 
 
+---
+---
 
 
 
 # RUSSIAN
 
-# 🚀 AI Visual Debugger (LangChain Chrome Extension)
+# 🚀 AI Visual Debugger
 
 Универсальный инструмент для визуализации и отладки работы ИИ-агентов в реальном времени. Позволяет увидеть, какие данные входят в нейросеть и какие выходят на каждом этапе цепочки (Chain), прямо в вашем браузере.
 
 ## 🌟 Как это работает?
 Проект состоит из трех частей:
-1. **Chrome Расширение (UI):** Отрисовывает красивый интерактивный граф.
-2. **Сервер-мост (`main.py`):** Тихо работает в фоне и пересылает данные от ИИ в расширение.
+1. **Фронтенд (React UI):** Отрисовывает красивый интерактивный граф.
+2. **Сервер-мост (`main.py`):** Тихо работает в фоне, получает данные от ИИ и раздает интерфейс.
 3. **Плагин (`callback.py`):** Подключается к вашему LangChain агенту одной строчкой кода.
 
 ---
 
-## 🛠 Быстрый старт (Только Python)
+## 🛠 Быстрый старт
 
-Для работы вам не нужно устанавливать сложные JS-фреймворки, нужен только **Python**.
+Для запуска проекта из исходников у вас должны быть установлены **Node.js** (для сборки фронтенда) и **Python** (для бэкенда).
 
-### Шаг 1. Установка расширения в Chrome
-Поскольку расширение пока не опубликовано в магазине, установим его локально:
-1. Склонируйте этот репозиторий: `git clone https://github.com/zengin0201/AI_Debugger.git`
-2. Откройте браузер Chrome и перейдите по адресу: `chrome://extensions/`
-3. В правом верхнем углу включите **«Режим разработчика»** (Developer mode).
-4. Нажмите кнопку **«Загрузить распакованное расширение»** (Load unpacked) в левом верхнем углу.
-5. Выберите папку **`dist`** (она находится внутри скачанного проекта).
-*Готово! На панели Chrome появится иконка расширения.*
+### Шаг 1. Сборка фронтенда (UI)
+Сначала нам нужно собрать React-приложение.
+1. Склонируйте репозиторий: `git clone https://github.com/zengin0201/AI_Debugger.git`
+2. Перейдите в папку фронтенда, установите зависимости и запустите сборку:
+```bash
+cd AI_Debugger/frontend
+npm install
+npm run build
+```
+3. **Важный шаг:** После сборки в папке `frontend` появится папка `dist`. **Скопируйте эту папку `dist` и поместите её в папку `backend`.** Она нужна Python-серверу, чтобы отрисовать интерфейс!
+
+*(Как альтернатива: вы можете использовать эту папку `dist` как Chrome-расширение. Для этого откройте `chrome://extensions/`, включите Режим разработчика и нажмите "Загрузить распакованное расширение").*
 
 ### Шаг 2. Запуск сервера-моста
-Перейдите в папку бэкенда, установите зависимости и запустите сервер. Он будет тихо висеть в фоне и ждать данных от вашей нейросети.
+Перейдите в папку бэкенда, установите зависимости и запустите сервер:
 ```bash
-cd AI_Debugger/backend
+cd ../backend
 pip install -r requirements.txt
 python main.py
 ```
+Откройте браузер и перейдите по адресу **http://localhost:8000**. Вы увидите пустой граф, ожидающий данных.
 
 ### Шаг 3. Подключение к вашему ИИ-агенту
-Скопируйте файл `callback.py` из папки `backend` и положите рядом со своим Python-скриптом.
+Скопируйте файл `callback.py` (из папки `backend`) и положите рядом со своим Python-скриптом.
 
 Пример интеграции в ваш код (`test_bot.py`):
 ```python
@@ -142,8 +153,7 @@ asyncio.run(main())
 ```
 
 ### Шаг 4. Смотрим магию! 🪄
-1. Кликните на иконку расширения **AI Debugger** в Chrome (откроется окно мониторинга).
-2. Запустите вашего бота в терминале:
+Убедитесь, что у вас открыта вкладка с дашбордом, и запустите вашего бота в новом терминале:
 ```bash
 python test_bot.py
 ```
