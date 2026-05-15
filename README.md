@@ -70,20 +70,11 @@ asyncio.run(main())
 python test_bot.py
 ```
 The agent's steps, thoughts, inputs, and outputs will instantly appear on the graph in your browser!
-```
 
 
 
 
 
-
-
-
-
-
-
-
-```
 
 #RUSSIAN
 
