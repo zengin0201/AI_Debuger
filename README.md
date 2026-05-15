@@ -41,7 +41,9 @@ After the build, a `dist` folder will appear inside the `frontend/` directory. *
 2. Turn on **Developer mode** (toggle in the top right corner).
 3. Click the **Load unpacked** button in the top left corner.
 4. Select the `dist` folder you just built (`AI_Debugger/frontend/dist`).
-5. *Done!* Pin the extension to your toolbar and click its icon to open the AI Flow Monitor.
+5. Launch main.py in your IDE
+6. Launch your bot python Your_bot.py
+7. *Done!* Pin the extension to your toolbar and click its icon to open the AI Flow Monitor.
 
 ### Step 3: Run the Bridge Server
 The extension needs a bridge to talk to your Python code. Open a terminal, navigate to the backend, and start the server:
@@ -146,7 +148,9 @@ npm run build
 2. Включите **Режим разработчика** (переключатель в правом верхнем углу).
 3. Нажмите кнопку **Загрузить распакованное расширение** (в левом верхнем углу).
 4. Выберите папку `dist`, которую мы только что собрали (`AI_Debugger/frontend/dist`).
-5. *Готово!* Закрепите расширение на панели задач. При клике на него откроется монитор AI Flow.
+5. Запустите main.py в IDE
+6. Запустите вашего бота python Your_bot.py
+7. *Готово!* Закрепите расширение на панели задач. При клике на него откроется монитор AI Flow.
 
 ### Шаг 3: Запуск сервера-моста
 Чтобы расширение получало данные от Python-кода, нужен сервер-мост. Откройте новый терминал, перейдите в папку бэкенда и запустите его:
